@@ -1,0 +1,139 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- Elfy -->
+<link rel="import" href="../ee-shared-styles/shared-styles.html">
+
+<!-- Iron -->
+
+<!-- Paper -->
+
+<!-- Third -->
+<link rel="import" href="../image-mask/image-mask.html">
+<link rel="import" href="../vaadin-upload/vaadin-upload.html">
+
+<!-- My -->
+<!--
+`ee-avatar`
+edit and display avatar
+
+@demo demo/index.html
+-->
+
+<dom-module id="ee-avatar">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        --button-height: 40px;
+      }
+
+      .container {
+
+      }
+
+      .container:hover > #upload {
+        opacity: 1;
+        -webkit-transition: opacity .25s ease-in-out;
+        -moz-transition: opacity .25s ease-in-out;
+        -ms-transition: opacity .25s ease-in-out;
+        -o-transition: opacity .25s ease-in-out;
+        transition: opacity .25s ease-in-out;
+      }
+
+      #upload {
+        border: 0;
+        padding: 0;
+        opacity: 0;
+        --vaadin-upload-button-add: {
+          padding: 0;
+          opacity: 0.8;
+          background: #000;
+          border-radius: var(--button-height);
+          height: var(--button-height);
+        };
+
+        --vaadin-upload-drop-label: {
+          margin: 0;
+        };
+
+        --vaadin-upload-drop-label: {
+          margin: 0;
+          padding: 0;
+        };
+      }
+    </style>
+    <div class="h-c">
+      <div class="v-c container">
+      <image-mask id="avatar"
+        size="[[size]]"
+        src="[[src]]">
+      </image-mask>
+
+      <vaadin-upload id="upload"
+          on-upload-before="_prepareImage" name="image"
+          max-files="1"
+          accept=".jpg,.jpeg,.png,.gif"
+          max-file-size="3000000">
+        <div class="drop-label"></div>
+        <div class="file-list"></div>
+      </vaadin-upload>
+    </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ee-avatar',
+
+      properties: {
+        size: {
+          type: String,
+          value: '120',
+          observer: '_sizeChanged'
+        },
+
+        src: {
+          type: String,
+          notify: true,
+        },
+
+        buttonTitle: {
+          type: String,
+          value: 'change',
+          observer: '_titleChanged'
+        }
+      },
+
+      _titleChanged(title) {
+        if (!title) return
+        this.async(function() {
+          this.$.upload.set('i18n.addFiles.one', title);
+        }.bind(this));
+      },
+
+      _sizeChanged(size) {
+        if (!size || isNaN(size) || !this.$.upload) return
+        var h = ((parseInt(size) / 2  + 3) * -1).toString() + 'px'
+        this.$.upload.style.top = h
+        this.$.upload.style.marginBottom = h
+        this.customStyle['--button-height'] = (parseInt(size)/2).toString() + 'px';
+        this.updateStyles();
+      },
+
+      _prepareImage(e) {
+        var file = e.detail.file
+        var reader = new FileReader();
+        var self = this
+        reader.onload = function(e) {
+          self.src = e.target.result
+          self.$.upload.files = []
+          self.fire('image-changed')
+        }
+        reader.readAsDataURL(file);
+        e.preventDefault()
+      },
+
+    });
+  </script>
+</dom-module>
