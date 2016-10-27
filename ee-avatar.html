@@ -25,10 +25,7 @@ edit and display avatar
       :host {
         display: block;
         --button-height: 40px;
-      }
-
-      .container {
-
+        --button-font-size: 0.8em;
       }
 
       .container:hover > #upload {
@@ -44,12 +41,18 @@ edit and display avatar
         border: 0;
         padding: 0;
         opacity: 0;
+
         --vaadin-upload-button-add: {
+          font-size: var(--button-font-size);
           padding: 0;
           opacity: 0.8;
           background: #000;
-          border-radius: var(--button-height);
+          border-radius: calc(var(--button-height) * 2);
           height: var(--button-height);
+        };
+
+        --vaadin-upload-buttons-primary: {
+          margin: 0;
         };
 
         --vaadin-upload-drop-label: {
@@ -114,10 +117,20 @@ edit and display avatar
 
       _sizeChanged(size) {
         if (!size || isNaN(size) || !this.$.upload) return
-        var h = ((parseInt(size) / 2  + 3) * -1).toString() + 'px'
+        var h = ((parseInt(size) / 2  + 4) * -1).toString() + 'px'
         this.$.upload.style.top = h
         this.$.upload.style.marginBottom = h
         this.customStyle['--button-height'] = (parseInt(size)/2).toString() + 'px';
+
+        if (parseInt(size) > 81) {
+          this.customStyle['--button-font-size'] = '1em'
+        }
+        if (parseInt(size) < 81) {
+          this.customStyle['--button-font-size'] = '0.8em'
+        }
+        if (parseInt(size) < 61) {
+          this.customStyle['--button-font-size'] = '0.6em'
+        }
         this.updateStyles();
       },
 
