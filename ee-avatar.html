@@ -69,7 +69,7 @@ edit and display avatar
       <div class="v-c container">
       <image-mask id="avatar"
         size="[[size]]"
-        src="[[src]]">
+        src="[[_src]]">
       </image-mask>
 
       <vaadin-upload id="upload"
@@ -96,6 +96,11 @@ edit and display avatar
           observer: '_sizeChanged'
         },
 
+        _src: {
+          type: String,
+          notify: true,
+        },
+
         src: {
           type: String,
           notify: true,
@@ -105,7 +110,21 @@ edit and display avatar
           type: String,
           value: 'change',
           observer: '_titleChanged'
-        }
+        },
+
+        noHttpsReplace: {
+          type: Boolean,
+          value: false,
+        },
+      },
+
+      observers: [
+        '_srcChanged(src,noHttpsReplace)',
+      ],
+
+      _srcChanged(src,noHttpsReplace) {
+        if (!src || src.length < 3) return
+        this._src = noHttpsReplace ? src : src.replace(/^http:\/\//i, 'https://');
       },
 
       _titleChanged(title) {
