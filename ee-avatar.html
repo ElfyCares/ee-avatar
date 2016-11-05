@@ -72,14 +72,16 @@ edit and display avatar
         src="[[_src]]">
       </image-mask>
 
-      <vaadin-upload id="upload"
-          on-upload-before="_prepareImage" name="image"
-          max-files="1"
-          accept=".jpg,.jpeg,.png,.gif"
-          max-file-size="3000000">
-        <div class="drop-label"></div>
-        <div class="file-list"></div>
-      </vaadin-upload>
+      <template is="dom-if" if="[[!noChange]]">
+        <vaadin-upload id="upload"
+            on-upload-before="_prepareImage" name="image"
+            max-files="1"
+            accept=".jpg,.jpeg,.png,.gif"
+            max-file-size="3000000">
+          <div class="drop-label"></div>
+          <div class="file-list"></div>
+        </vaadin-upload>
+      </template>
     </div>
     </div>
   </template>
@@ -121,6 +123,11 @@ edit and display avatar
           type: Boolean,
           value: false,
         },
+
+        noChange: {
+          type: Boolean,
+          value: false,
+        },
       },
 
       observers: [
@@ -144,7 +151,7 @@ edit and display avatar
       },
 
       _sizeChanged(size) {
-        if (!size || isNaN(size) || !this.$.upload) return
+        if (!size || isNaN(size) || !this.$$('#upload')) return
         var h = ((parseInt(size) / 2  + 4) * -1).toString() + 'px'
         this.$.upload.style.top = h
         this.$.upload.style.marginBottom = h
