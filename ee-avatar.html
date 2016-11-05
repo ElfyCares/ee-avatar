@@ -96,6 +96,11 @@ edit and display avatar
           observer: '_sizeChanged'
         },
 
+        fallback: {
+          type: String,
+          value: '',
+        },
+
         _src: {
           type: String,
           notify: true,
@@ -123,8 +128,12 @@ edit and display avatar
       ],
 
       _srcChanged(src,noHttpsReplace) {
-        if (!src || src.length < 3) return
-        this._src = noHttpsReplace ? src : src.replace(/^http:\/\//i, 'https://');
+        if (!src || src.length < 3) {
+          if (!this.fallback || this.fallback.length < 3) return
+          this._src = noHttpsReplace ? this.fallback : this.fallback.replace(/^http:\/\//i, 'https://');
+        } else {
+          this._src = noHttpsReplace ? src : src.replace(/^http:\/\//i, 'https://');
+        }
       },
 
       _titleChanged(title) {
