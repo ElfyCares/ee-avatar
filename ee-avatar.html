@@ -72,14 +72,14 @@ edit and display avatar
         src="[[_src]]">
       </image-mask>
 
-      <vaadin-upload id="upload" hidden$="[[noChange]]"
-        on-upload-before="_prepareImage" name="image"
-        max-files="1"
-        accept=".jpg,.jpeg,.png,.gif"
-        max-file-size="3000000">
-        <div class="drop-label"></div>
-        <div class="file-list"></div>
-      </vaadin-upload>
+        <vaadin-upload id="upload" hidden$="[[noChange]]"
+            on-upload-before="_prepareImage" name="image"
+            max-files="1"
+            accept=".jpg,.jpeg,.png,.gif"
+            max-file-size="3000000">
+          <div class="drop-label"></div>
+          <div class="file-list"></div>
+        </vaadin-upload>
     </div>
     </div>
   </template>
@@ -129,8 +129,16 @@ edit and display avatar
       },
 
       observers: [
-        '_srcChanged(src,noHttpsReplace)',
+        '_srcChanged(src,noHttpsReplace,fallback)',
+        '_srcChangedNull(noHttpsReplace,fallback)'
       ],
+
+      _srcChangedNull(noHttpsReplace,fallback) {
+        // if src is null, srcChanged doesnt get called
+        if (!this.src) {
+          this._srcChanged('', noHttpsReplace,fallback)
+        }
+      },
 
       _srcChanged(src,noHttpsReplace) {
         if (!src || src.length < 3) {
