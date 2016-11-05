@@ -72,16 +72,14 @@ edit and display avatar
         src="[[_src]]">
       </image-mask>
 
-      <template is="dom-if" if="[[!noChange]]">
-        <vaadin-upload id="upload"
-            on-upload-before="_prepareImage" name="image"
-            max-files="1"
-            accept=".jpg,.jpeg,.png,.gif"
-            max-file-size="3000000">
-          <div class="drop-label"></div>
-          <div class="file-list"></div>
-        </vaadin-upload>
-      </template>
+      <vaadin-upload id="upload" hidden$="[[noChange]]"
+        on-upload-before="_prepareImage" name="image"
+        max-files="1"
+        accept=".jpg,.jpeg,.png,.gif"
+        max-file-size="3000000">
+        <div class="drop-label"></div>
+        <div class="file-list"></div>
+      </vaadin-upload>
     </div>
     </div>
   </template>
