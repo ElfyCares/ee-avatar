@@ -67,11 +67,14 @@ edit and display avatar
     </style>
     <div class="h-c">
       <div class="v-c container">
+
       <image-mask id="avatar"
         size="[[size]]"
-        src="[[_src]]">
+        src="[[_src]]"
+        shape="[[shape]]">
       </image-mask>
 
+      <template is="dom-if" if="[[!noChange]]">
         <vaadin-upload id="upload" hidden$="[[noChange]]"
             on-upload-before="_prepareImage" name="image"
             max-files="1"
@@ -80,6 +83,8 @@ edit and display avatar
           <div class="drop-label"></div>
           <div class="file-list"></div>
         </vaadin-upload>
+      </template>
+      
     </div>
     </div>
   </template>
@@ -109,6 +114,11 @@ edit and display avatar
         src: {
           type: String,
           notify: true,
+        },
+
+        shape: {
+          type: String,
+          value: 'circle',
         },
 
         buttonTitle: {
