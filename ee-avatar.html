@@ -84,7 +84,7 @@ edit and display avatar
           <div class="file-list"></div>
         </vaadin-upload>
       </template>
-      
+
     </div>
     </div>
   </template>
@@ -160,9 +160,9 @@ edit and display avatar
       },
 
       _titleChanged(title) {
-        if (!title) return
+        if (!title || !this.$$('#upload')) return
         this.async(function() {
-          this.$.upload.set('i18n.addFiles.one', title);
+          this.$$('#upload').set('i18n.addFiles.one', title);
         }.bind(this));
       },
 
