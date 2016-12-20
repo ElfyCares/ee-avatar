@@ -169,8 +169,8 @@ edit and display avatar
       _sizeChanged(size) {
         if (!size || isNaN(size) || !this.$$('#upload')) return
         var h = ((parseInt(size) / 2  + 4) * -1).toString() + 'px'
-        this.$.upload.style.top = h
-        this.$.upload.style.marginBottom = h
+        this.$$('#upload').style.top = h
+        this.$$('#upload').style.marginBottom = h
         this.customStyle['--button-height'] = (parseInt(size)/2).toString() + 'px';
 
         if (parseInt(size) > 81) {
@@ -191,7 +191,7 @@ edit and display avatar
         var self = this
         reader.onload = function(e) {
           self.src = e.target.result
-          self.$.upload.files = []
+          self.$$('#upload').upload.files = []
           self.fire('image-changed')
         }
         reader.readAsDataURL(file);
