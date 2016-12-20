@@ -191,7 +191,7 @@ edit and display avatar
         var self = this
         reader.onload = function(e) {
           self.src = e.target.result
-          self.$$('#upload').upload.files = []
+          self.$$('#upload').files = []
           self.fire('image-changed')
         }
         reader.readAsDataURL(file);
